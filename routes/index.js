@@ -13,8 +13,11 @@ function getCookies(request) {
 
 router.get("/game", async (req, res)=>{
     const cookies = getCookies(req);
-    Game.findOne({userId: cookies.userId}, (err, {blocks, level}) => {
-        res.send({blocks, level});
+    Game.findOne({userId: cookies.userId}, (err, game) => {
+        if(game){
+            const {blocks, level} = game;
+            res.send({blocks, level});
+        } else res.send(null);
     });
 });
 
