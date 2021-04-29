@@ -13,7 +13,7 @@ function getCookies(request) {
 
 router.get("/game", async (req, res)=>{
     const cookies = getCookies(req);
-    const game = Game.findOne({userId: cookies.userId}).exec();
+    const game = await Game.findOne({userId: cookies.userId}, (err, game) => {return game}).exec();
     if(game){
         const {blocks, level, position} = game;
         res.send({blocks, level, position});
@@ -22,15 +22,14 @@ router.get("/game", async (req, res)=>{
 
 router.post("/game", async (req, res) => {
     const cookies = getCookies(req);
-    Game.replaceOne({userId: cookies.userId}, {
+    const game = await Game.replaceOne({userId: cookies.userId}, {
         userId: cookies.userId,
         blocks: req.body.blocks,
         level: req.body.level,
         position: req.body.position
-    }, {upsert: true}, () => {
-        res.sendStatus(200);
-    });
+    }, {upsert: true});
+    res.status(200).send("OK");
 
-})
+});
 
 module.exports = router;
