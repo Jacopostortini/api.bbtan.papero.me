@@ -15,8 +15,8 @@ router.get("/game", async (req, res)=>{
     const cookies = getCookies(req);
     Game.findOne({userId: cookies.userId}, (err, game) => {
         if(game){
-            const {blocks, level} = game;
-            res.send({blocks, level});
+            const {blocks, level, position} = game;
+            res.send({blocks, level, position});
         } else res.send(null);
     });
 });
@@ -26,7 +26,8 @@ router.post("/game", async (req, res) => {
     Game.replaceOne({userId: cookies.userId}, {
         userId: cookies.userId,
         blocks: req.body.blocks,
-        level: req.body.level
+        level: req.body.level,
+        position: req.body.position
     }, {upsert: true}, () => {
         res.sendStatus(200);
     });
