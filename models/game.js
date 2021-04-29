@@ -10,7 +10,8 @@ module.exports = mongoose.model(
                 userId: String,
                 creationDate: {type: Number, default: Date.now()},
                 blocks: Array,
-                level: Number
+                level: Number,
+                position: Number
             }
         )
     );
